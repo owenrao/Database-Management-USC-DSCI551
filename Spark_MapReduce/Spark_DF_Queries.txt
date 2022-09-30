@@ -1,0 +1,56 @@
+a)
+[Code]
+churn[(churn.gender=='Male') & (churn.Churn=='Yes')].count()
+[Output]
+930
+
+b)
+[Code]
+churn = churn.withColumn('TotalCharges', fc.col('TotalCharges').cast('double'))
+churn[churn.Churn=='Yes'].groupBy('gender').agg(fc.max("TotalCharges")).show()
+[Output]
++------+-----------------+
+|gender|max(TotalCharges)|
++------+-----------------+
+|Female|           8127.6|
+|  Male|           8684.8|
++------+-----------------+
+
+c)
+[Code]
+churn[churn.Churn=='Yes'].groupBy('gender').count().show()
+[Output]
++------+-----+
+|gender|count|
++------+-----+
+|Female|  939|
+|  Male|  930|
++------+-----+
+
+d)
+[Code]
+churn.groupBy(['Churn','Contract']).agg(fc.count("*").alias("cnt")).orderBy(['Churn','cnt'],ascending=[False,False]).show()
+[Output]
++-----+--------------+----+
+|Churn|      Contract| cnt|
++-----+--------------+----+
+|  Yes|Month-to-month|1655|
+|  Yes|      One year| 166|
+|  Yes|      Two year|  48|
+|   No|Month-to-month|2220|
+|   No|      Two year|1647|
+|   No|      One year|1307|
++-----+--------------+----+
+
+e)
+[Code]
+churn.groupBy(['gender','Churn']).agg(fc.count("*").alias("cnt")).filter("cnt>1000").show()
+[Output]
++------+-----+----+
+|gender|Churn| cnt|
++------+-----+----+
+|  Male|   No|2625|
+|Female|   No|2549|
++------+-----+----+
+
+

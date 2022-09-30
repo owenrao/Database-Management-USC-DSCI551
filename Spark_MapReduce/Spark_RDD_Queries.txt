@@ -1,0 +1,12 @@
+a)
+[Code]
+churn_rdd = churn.rdd
+churn_rdd.filter(lambda x: (x.gender=='Male')&(x.Churn=='Yes')).count()
+[Output]
+930
+
+b)
+[Code]
+churn_rdd.filter(lambda x: x.Churn=='Yes').map(lambda x: (x.gender,x.TotalCharges)).reduceByKey(lambda x1,x2: max(x1,x2))
+[Output]
+[('Male', 8684.8), ('Female', 8127.6)]
